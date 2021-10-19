@@ -10,6 +10,9 @@ const player1 = {
   attack: function () {
     console.log(player1.name + ' Fight ...');
   },
+  changeHP,
+  renderHP,
+  elHP,
 };
 
 const player2 = {
@@ -21,6 +24,9 @@ const player2 = {
   attack: function () {
     console.log(player2.name + ' Fight ...');
   },
+  changeHP,
+  renderHP,
+  elHP,
 };
 
 function createElement(tag, className) {
@@ -87,21 +93,46 @@ function draw() {
   return $drawTitle;
 }
 
-function changeHP(player) {
-  const $playerLife = document.querySelector('.player' + player.player + ' .life');
-  player.hp -= getRandomInt(20);
-
-  if (player.hp <= 0) {
-    player.hp = 0;
-  };
-
-  $playerLife.style.width = player.hp + '%';
+function changeHP(hp) {
+  if (this.hp >= hp) {
+    this.hp -= hp;
+  } else if (this.hp === 0) {
+    this.hp;
+  } else if (this.hp < hp) {
+    this.hp = 0;
+  }
 }
 
-$button.addEventListener('click', function () {
-  changeHP(player1);
-  changeHP(player2);
+function elHP() {
+  const $playerLife = document.querySelector('.player' + this.player + ' .life');
+  return $playerLife;
+}
 
+function renderHP() {
+  const player = this.elHP();
+  player.style.width = this.hp + '%';
+}
+
+// function changeHP(player) {
+//   const $playerLife = document.querySelector('.player' + player.player + ' .life');
+//   player.hp -= getRandomInt(20);
+
+//   if (player.hp <= 0) {
+//     player.hp = 0;
+//   };
+
+//   $playerLife.style.width = player.hp + '%';
+// }
+
+$button.addEventListener('click', function () {
+  // changeHP(player1);
+  // changeHP(player2);
+  player1.changeHP(getRandomInt(20));
+  player1.renderHP();
+
+  player2.changeHP(getRandomInt(20));
+  player2.renderHP();
+  console.log(player1.hp, player2.hp);
   if (player1.hp === 0 || player2.hp === 0) {
     $button.disabled = true;
   }
@@ -110,7 +141,7 @@ $button.addEventListener('click', function () {
     $arenas.appendChild(showTitle(player2.name));
   } else if (player2.hp === 0 && player1.hp > player2.hp) {
     $arenas.appendChild(showTitle(player1.name));
-  } else if (player1.hp === 0 && player2.name === 0) {
+  } else if (player1.hp === 0 && player2.hp === 0) {
     $arenas.addEventListener(showTitle());
   }
 })
