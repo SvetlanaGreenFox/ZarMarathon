@@ -1,25 +1,25 @@
 const $arenas = document.querySelector('.arenas');
 const $button = document.querySelector('.button');
 
-const liukang = {
+const player1 = {
   player: 1,
   name: 'Liukang',
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/liukang.gif',
   weapon: [],
   attack: function () {
-    console.log(liukang.name + ' Fight ...');
+    console.log(player1.name + ' Fight ...');
   },
 };
 
-const scorpion = {
+const player2 = {
   player: 2,
   name: 'Scorpion',
   hp: 100,
   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon: [],
   attack: function () {
-    console.log(scorpion.name + ' Fight ...');
+    console.log(player2.name + ' Fight ...');
   },
 };
 
@@ -68,11 +68,16 @@ function playerLose(name) {
   return $loseTitle;
 }
 
-function playerWin(name) {
-  const $winTitle = createElement('div', 'winTitle');
-  $winTitle.innerText = name + ' Win!';
+function showTitle(name) {
+  const $showTitle = createElement('div', 'showTitle');
 
-  return $winTitle;
+  if (name) {
+    $showTitle.innerText = name + ' Win!';
+  } else {
+    $showTitle.innerText = 'Draw!';
+  }
+
+  return $showTitle;
 }
 
 function draw() {
@@ -85,25 +90,31 @@ function draw() {
 function changeHP(player) {
   const $playerLife = document.querySelector('.player' + player.player + ' .life');
   player.hp -= getRandomInt(20);
-  $playerLife.style.width = player.hp + '%';
 
   if (player.hp <= 0) {
-    $button.disabled = true;
-    if (player.player === 1) {
-      $arenas.appendChild(playerWin(scorpion.name));
-    } else if (player.player === 2) {
-      $arenas.appendChild(playerWin(liukang.name));
-    } else if (liukang.hp === scorpion.hp) {
-      $arenas.appendChild(draw());
-    }
-  }
+    player.hp = 0;
+  };
+
+  $playerLife.style.width = player.hp + '%';
 }
 
 $button.addEventListener('click', function () {
-  changeHP(liukang);
-  changeHP(scorpion);
+  changeHP(player1);
+  changeHP(player2);
+
+  if (player1.hp === 0 || player2.hp === 0) {
+    $button.disabled = true;
+  }
+
+  if (player1.hp === 0 && player1.hp < player2.hp) {
+    $arenas.appendChild(showTitle(player2.name));
+  } else if (player2.hp === 0 && player1.hp > player2.hp) {
+    $arenas.appendChild(showTitle(player1.name));
+  } else if (player1.hp === 0 && player2.name === 0) {
+    $arenas.addEventListener(showTitle());
+  }
 })
 
-$arenas.appendChild(createPlayer(liukang));
-$arenas.appendChild(createPlayer(scorpion));
+$arenas.appendChild(createPlayer(player1));
+$arenas.appendChild(createPlayer(player2));
 
