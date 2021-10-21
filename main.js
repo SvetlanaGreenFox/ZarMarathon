@@ -139,17 +139,15 @@ $button.addEventListener('click', function () {
   console.log(player1.hp, player2.hp);
   if (player1.hp === 0 || player2.hp === 0) {
     $button.disabled = true;
+    createReloadButton();
   }
 
   if (player1.hp === 0 && player1.hp < player2.hp) {
     $arenas.appendChild(showTitle(player2.name));
-    createReloadButton();
   } else if (player2.hp === 0 && player1.hp > player2.hp) {
     $arenas.appendChild(showTitle(player1.name));
-    createReloadButton();
   } else if (player1.hp === 0 && player2.hp === 0) {
     $arenas.addEventListener(showTitle());
-    createReloadButton();
   }
 })
 
