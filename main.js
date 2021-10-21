@@ -1,6 +1,13 @@
 const $arenas = document.querySelector('.arenas');
 const $button = document.querySelector('.button');
-// const $reloadButton = document.querySelector('.reloadWrap');
+const $form = document.querySelector('.control');
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+}
+const ATTACK = ['head', 'body', 'foot'];
 
 const player1 = {
   player: 1,
@@ -76,7 +83,7 @@ function playerLose(name) {
 }
 
 function showTitle(name) {
-  const $showTitle = createElement('div', 'showTitle');
+  const $showTitle = createElement('div', 'loseTitle');
 
   if (name) {
     $showTitle.innerText = name + ' Win!';
@@ -130,13 +137,70 @@ function createReloadButton() {
   return $wrapButton;
 }
 
-$button.addEventListener('click', function () {
-  player1.changeHP(getRandomInt(20));
-  player1.renderHP();
+function enemyAttack() {
+  const hit = ATTACK[getRandomInt(3) - 1];
+  const defence = ATTACK[getRandomInt(3) - 1];
 
-  player2.changeHP(getRandomInt(20));
-  player2.renderHP();
-  console.log(player1.hp, player2.hp);
+  return {
+    value: getRandomInt(HIT[hit]),
+    hit,
+    defence
+  }
+}
+
+// $button.addEventListener('click', function () {
+//   player1.changeHP(getRandomInt(20));
+//   player1.renderHP();
+
+//   player2.changeHP(getRandomInt(20));
+//   player2.renderHP();
+//   console.log(player1.hp, player2.hp);
+//   if (player1.hp === 0 || player2.hp === 0) {
+//     $button.disabled = true;
+//     createReloadButton();
+//   }
+
+//   if (player1.hp === 0 && player1.hp < player2.hp) {
+//     $arenas.appendChild(showTitle(player2.name));
+//   } else if (player2.hp === 0 && player1.hp > player2.hp) {
+//     $arenas.appendChild(showTitle(player1.name));
+//   } else if (player1.hp === 0 && player2.hp === 0) {
+//     $arenas.addEventListener(showTitle());
+//   }
+// })
+
+
+$form.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const enemy = enemyAttack();
+  const attack = {};
+
+  for (const item of $form) {
+    if (item.checked && item.name === 'hit') {
+      console.log(item.value);
+      attack.value = getRandomInt(HIT[item.value]);
+      console.log(attack.value);
+      attack.hit = item.value;
+    }
+
+    if (item.checked && item.name === 'defence') {
+      attack.defence = item.value;
+    }
+
+    item.checked = false;
+  }
+
+  if (enemy.defence !== attack.hit) {
+    player1.changeHP(attack.value);
+    player1.renderHP();
+  }
+
+  if (attack.defence !== enemy.hit) {
+    player2.changeHP(enemy.value);
+    player2.renderHP();
+  }
+
   if (player1.hp === 0 || player2.hp === 0) {
     $button.disabled = true;
     createReloadButton();
