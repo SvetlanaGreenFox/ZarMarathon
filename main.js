@@ -8,6 +8,7 @@ const HIT = {
   body: 25,
   foot: 20,
 }
+
 const ATTACK = ['head', 'body', 'foot'];
 
 const logs = {
@@ -228,26 +229,25 @@ function checkWin() {
 function generateLogs(type, player1, player2) {
   const date = new Date();
   const time = `${date.getHours()}:${date.getMinutes()}`;
-  const randomNum = logs[type].length;
+  const randomNum = logs[type].length - 1;
   let text = '';
   switch (type) {
     case 'start':
       text = logs['start'].replace('[time]', time).replace('[player1]', player1.name).replace('[player2]', player2.name);
       break;
     case 'defence':
-      text = time + ' - ' + logs['defence'][getRandomInt(randomNum)].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name);
+      text = `${time}-${logs['defence'][getRandomInt(randomNum)].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name)}`;
       break;
     case 'hit':
-      text = time + ' - ' + logs['hit'][getRandomInt(randomNum)].replace('[playerKick]', player2.name).replace('[playerDefence]', player1.name) + player1.hp;
+      text = `${time} - ${logs['hit'][getRandomInt(randomNum)].replace('[playerKick]', player2.name).replace('[playerDefence]', player1.name)} - ${100 - player1.hp} [${player1.hp}/100]`;
       break;
     case 'end':
       text = logs['end'][getRandomInt(randomNum)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
       break;
-    default:
+    case 'draw':
       text = logs['draw'];
   }
 
-  // console.log(text);
   const p = `<p>${text}</p>`;
   $chat.insertAdjacentHTML('afterbegin', p);
 }
@@ -281,6 +281,7 @@ $form.addEventListener('submit', function (e) {
 
   checkWin();
 })
+
 generateLogs('start', player1, player2);
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
