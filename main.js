@@ -226,9 +226,19 @@ function checkWin() {
   }
 }
 
-function generateLogs(type, player1, player2) {
+function timeCorrection() {
   const date = new Date();
-  const time = `${date.getHours()}:${date.getMinutes()}`;
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let sec = date.getSeconds();
+  hours = hours < 10 ? `0${hours}` : hours;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  sec = sec < 10 ? `0${sec}` : sec;
+  return `${hours}:${minutes}:${sec}`;
+}
+
+function generateLogs(type, player1, player2, hp) {
+  const time = timeCorrection();
   const randomNum = logs[type].length - 1;
   let text = '';
   switch (type) {
@@ -239,7 +249,7 @@ function generateLogs(type, player1, player2) {
       text = `${time}-${logs['defence'][getRandomInt(randomNum)].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name)}`;
       break;
     case 'hit':
-      text = `${time} - ${logs['hit'][getRandomInt(randomNum)].replace('[playerKick]', player2.name).replace('[playerDefence]', player1.name)} - ${100 - player1.hp} [${player1.hp}/100]`;
+      text = `${time} - ${logs['hit'][getRandomInt(randomNum)].replace('[playerKick]', player2.name).replace('[playerDefence]', player1.name)} - ${hp} [${player1.hp}/100]`;
       break;
     case 'end':
       text = logs['end'][getRandomInt(randomNum)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
@@ -262,13 +272,13 @@ $form.addEventListener('submit', function (e) {
   if (enemy.defence !== player.hit) {
     player1.changeHP(player.value);
     player1.renderHP();
-    generateLogs('hit', player1, player2);
+    generateLogs('hit', player1, player2, player.value);
   }
 
   if (player.defence !== enemy.hit) {
     player2.changeHP(enemy.value);
     player2.renderHP();
-    generateLogs('hit', player2, player1);
+    generateLogs('hit', player2, player1, enemy.value);
   }
 
   if (player.defence === enemy.hit) {
