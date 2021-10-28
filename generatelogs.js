@@ -42,27 +42,52 @@ const logs = {
   draw: 'Ничья - это тоже победа!'
 };
 
-export function generateLogs(type, player1, player2, hp) {
+function getTextLog(type, player1Name, player2Name) {
   const time = timeCorrection();
   const randomNum = logs[type].length - 1;
-  let text = '';
   switch (type) {
     case 'start':
-      text = logs['start'].replace('[time]', time).replace('[player1]', player1.name).replace('[player2]', player2.name);
-      break;
-    case 'defence':
-      text = `${time}-${logs['defence'][getRandomInt(randomNum)].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name)}`;
+      return logs['start']
+        .replace('[time]', time)
+        .replace('[player1]', player1Name)
+        .replace('[player2]', player2Name);
       break;
     case 'hit':
-      text = `${time} - ${logs['hit'][getRandomInt(randomNum)].replace('[playerKick]', player2.name).replace('[playerDefence]', player1.name)} - ${hp} [${player1.hp}/100]`;
+      return logs['hit'][getRandomInt(randomNum)]
+        .replace('[playerKick]', player2Name)
+        .replace('[playerDefence]', player1Name);
+      break;
+    case 'defence':
+      return logs['defence'][getRandomInt(randomNum)]
+        .replace('[playerKick]', player1Name)
+        .replace('[playerDefence]', player2Name);
       break;
     case 'end':
-      text = logs['end'][getRandomInt(randomNum)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
+      return logs['end'][getRandomInt(randomNum)]
+        .replace('[playerWins]', player1Name)
+        .replace('[playerLose]', player2Name);
       break;
     case 'draw':
-      text = logs['draw'];
+      return logs['draw'];
   }
+}
 
+export function generateLogs(type, { name } = {}, { name: player2Name, hp } = {}, attack) {
+  const time = timeCorrection();
+  let text = getTextLog(type, name, player2Name);
+  console.log(name, player2Name);
+  console.log(text);
+  switch (type) {
+    case 'hit':
+      text = `${time} ${text} -${attack} [${hp} / 100]`;
+      console.log(hp);
+      break;
+    case 'defence':
+    case 'end':
+    case 'draw':
+      text = `${time} ${text}`;
+      break;
+  }
   const p = `<p>${text}</p>`;
   $chat.insertAdjacentHTML('afterbegin', p);
 }
