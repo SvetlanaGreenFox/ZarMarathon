@@ -75,12 +75,11 @@ function getTextLog(type, player1Name, player2Name) {
 export function generateLogs(type, { name } = {}, { name: player2Name, hp } = {}, attack) {
   const time = timeCorrection();
   let text = getTextLog(type, name, player2Name);
-  console.log(name, player2Name);
-  console.log(text);
+  // console.log(name, player2Name);
   switch (type) {
     case 'hit':
       text = `${time} ${text} -${attack} [${hp} / 100]`;
-      console.log(hp);
+      // console.log(hp);
       break;
     case 'defence':
     case 'end':

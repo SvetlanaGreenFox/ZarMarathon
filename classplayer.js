@@ -1,4 +1,4 @@
-class Player {
+export class Player {
   constructor({ player, name, hp, img }) {
     this.player = player;
     this.name = name;
@@ -27,16 +27,16 @@ class Player {
   }
 }
 
-export const player1 = new Player({
-  player: 1,
-  name: 'Liukang',
-  hp: 100,
-  img: 'http://reactmarathon-api.herokuapp.com/assets/liukang.gif',
-});
+// export const player1 = new Player({
+//   player: 1,
+//   name: 'Liukang',
+//   hp: 100,
+//   img: 'http://reactmarathon-api.herokuapp.com/assets/liukang.gif',
+// });
 
-export const player2 = new Player({
-  player: 2,
-  name: 'Scorpion',
-  hp: 100,
-  img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
-})
+// export const player2 = new Player({
+//   player: 2,
+//   name: 'Scorpion',
+//   hp: 100,
+//   img: 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
+// })
