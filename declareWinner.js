@@ -3,7 +3,19 @@ import { generateLogs } from "./generatelogs.js";
 
 const $button = document.querySelector('.button');
 
-export function checkWin(player1, player2, wrap) {
+const showTitle = (name) => {
+  const $showTitle = createElement('div', 'loseTitle');
+
+  if (name) {
+    $showTitle.innerText = name + ' Win!';
+  } else {
+    $showTitle.innerText = 'Draw!';
+  }
+
+  return $showTitle;
+}
+
+export const checkWin = (player1, player2, wrap) => {
   const { name: name1, hp: hp1 } = player1;
   const { name: name2, hp: hp2 } = player2;
 
@@ -22,16 +34,4 @@ export function checkWin(player1, player2, wrap) {
     wrap.addEventListener(showTitle());
     generateLogs('draw', player1, player2);
   }
-}
-
-function showTitle(name) {
-  const $showTitle = createElement('div', 'loseTitle');
-
-  if (name) {
-    $showTitle.innerText = name + ' Win!';
-  } else {
-    $showTitle.innerText = 'Draw!';
-  }
-
-  return $showTitle;
 }
