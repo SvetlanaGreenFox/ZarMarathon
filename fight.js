@@ -6,18 +6,6 @@ const HIT = {
   foot: 20,
 }
 
-const ATTACK = ['head', 'body', 'foot'];
-
-export function enemyAttack() {
-  const hit = ATTACK[getRandomInt(3) - 1];
-  const defence = ATTACK[getRandomInt(3) - 1];
-  return {
-    value: getRandomInt(HIT[hit]),
-    hit,
-    defence
-  }
-}
-
 export function playerAttack(form) {
   const attack = {};
 
@@ -36,3 +24,16 @@ export function playerAttack(form) {
 
   return attack;
 }
+
+
+// const ATTACK = ['head', 'body', 'foot'];
+
+// export function enemyAttack() {
+//   const hit = ATTACK[getRandomInt(3) - 1];
+//   const defence = ATTACK[getRandomInt(3) - 1];
+//   return {
+//     value: getRandomInt(HIT[hit]),
+//     hit,
+//     defence
+//   }
+// }
